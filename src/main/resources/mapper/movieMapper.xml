@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mypj.DAO.IF_MovieDAO">
+	<select id="getMovieNo" resultType="int">
+		select movie_no_seq.nextval from dual
+	</select>
+	
+	<insert id="insertMovie">
+		insert into drivie_movie values(#{no},#{title},#{director},#{actor},#{photo},#{story})
+	</insert>
+	
+	<select id="getMovieList" resultType="com.mypj.VO.MovieVO">
+		select * from drivie_movie
+	</select>
+	
+	<select id="selectMovie" resultType="com.mypj.VO.MovieVO">
+		select * from drivie_movie where no=#{no}
+	</select>
+	
+	<update id="updateMovie">
+		update drivie_movie set title=#{title},director=#{director},actor=#{actor},story=#{story},photo=#{photo} where no=#{no}
+	</update>
+	
+	<delete id="deleteMovie">
+		delete drivie_movie where no=#{no}
+	</delete>
+	
+	<select id="searchMovie" resultType="com.mypj.VO.MovieVO">
+		select * from drivie_movie where title like '%'||#{searchWord}||'%'
+	</select>
+</mapper>

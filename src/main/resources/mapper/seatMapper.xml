@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mypj.DAO.IF_SeatDAO">
+<select id="getSeatList" resultType="com.mypj.VO.SeatVO">
+select *
+from drivie_seat_info where seat_no=#{setMnTNo}
+</select>
+
+<select id="getSeatFlag" resultType="com.mypj.VO.SeatFlagVO">
+select *
+from drivie_seat_flag where seat_no=#{setMnTNo}
+</select>
+</mapper>

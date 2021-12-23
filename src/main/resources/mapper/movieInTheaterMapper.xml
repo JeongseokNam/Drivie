@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.mypj.DAO.IF_MovieInTheaterDAO">
+	<resultMap type="com.mypj.VO.MovieVO" id="movieMap">
+		<id property="no" column="no" />
+		<id property="title" column="title" />
+		<id property="director" column="director" />
+		<id property="actor" column="actor" />
+		<id property="photo" column="photo" />
+		<id property="story" column="story" />
+	</resultMap>
+	<resultMap type="com.mypj.VO.TheaterVO" id="theaterMap">
+		<id property="no" column="no" />
+		<id property="theatername" column="theatername" />
+		<id property="address" column="address" />
+		<id property="detailAddress" column="detailAddress" />
+		<id property="extraAddress" column="extraAddress" />
+		<id property="tel" column="tel" />
+	</resultMap>
+	<resultMap type="com.mypj.VO.MovieInTheaterVO" id="MnTMap">
+		<id property="no" column="no" />
+		<id property="movie_no" column="movie_no" />
+		<id property="theater_no" column="theater_no" />
+		<id property="showtime" column="showtime" />
+		<collection property="movieVO" resultMap="movieMap" />
+		<collection property="theaterVO" resultMap="theaterMap" />
+	</resultMap>
+
+	<insert id="insertMnT">
+		insert into drivie_movie_in_theater
+		values(movie_in_theater_no_seq.nextval,#{movie_no},#{theater_no},#{showtime})
+	</insert>
+
+	<select id="getMnTList" resultMap="MnTMap">
+		select  a.title,a.photo,b.theatername,c.no,c.showtime
+		from drivie_movie a, drivie_theater b, drivie_movie_in_theater c
+		where a.no=c.movie_no and b.no=c.theater_no
+		order by c.showtime
+	</select>
+	
+	<delete id="deleteMnT">
+		delete drivie_movie_in_theater where no=#{no}
+	</delete>
+	<select id="theaterSearchList" resultMap="MnTMap">
+		select a.title,a.photo,b.theatername,c.no,c.showtime
+		from drivie_movie a, drivie_theater b, drivie_movie_in_theater c
+		where a.no=c.movie_no and b.no=c.theater_no and b.theatername like '%'||#{searchWord}||'%'
+		order by c.showtime
+	</select>
+	<select id="getTheaterListByMovie" resultMap="MnTMap">
+		select a.no,a.theatername,b.showtime,c.photo
+		from drivie_theater a, drivie_movie_in_theater b, drivie_movie c
+		where c.no=b.movie_no and a.no=b.theater_no and b.movie_no=#{movieNo}
+	</select>
+	
+	<select id="getShowTimeLisetByMnT" resultType="com.mypj.VO.MovieInTheaterVO">
+		select no,showtime
+		from drivie_movie_in_theater
+		where movie_no=#{movie_no} and theater_no=#{theater_no}
+	</select>
+</mapper>

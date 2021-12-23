@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.mypj.DAO.IF_FoodInTheaterDAO">
+	<resultMap type="com.mypj.VO.TheaterVO" id="theaterMap">
+		<id property="no" column="no" />
+		<id property="theatername" column="theatername" />
+		<id property="address" column="address" />
+		<id property="detailAddress" column="detailAddress" />
+		<id property="extraAddress" column="extraAddress" />
+		<id property="tel" column="tel" />
+	</resultMap>
+	<resultMap type="com.mypj.VO.FoodVO" id="foodMap">
+		<id property="no" column="no"/>
+		<id property="foodname" column="foodname"/>
+		<id property="price" column="price"/>
+		<id property="photo" column="photo"/>
+	</resultMap>
+	<resultMap type="com.mypj.VO.FoodInTheaterVO" id="FnTMap">
+		<id property="no" column="no"/>
+		<id property="food_no" column="food_no"/>
+		<id property="theater_no" column="theater_no"/>
+		<collection property="foodVO" resultMap="foodMap"/>
+		<collection property="theaterVO" resultMap="theaterMap"/>
+	</resultMap>
+
+	<select id="getFnTList" resultMap="FnTMap">
+		select b.theatername,a.photo,a.foodname,a.price,c.no
+		from drivie_food a, drivie_theater b, drivie_food_in_theater c
+		where a.no=c.food_no and b.no=c.theater_no
+	</select>
+	<insert id="insertFnt">
+		insert into drivie_food_in_theater
+		values(food_in_theater_no_seq.nextval,#{food_no},#{theater_no})
+	</insert>
+	<delete id="deleteFnT">
+		delete drivie_food_in_theater where no=#{no}
+	</delete>
+	<select id="searchListe" resultMap="FnTMap">
+		select b.theatername,a.photo,a.foodname,a.price,c.no
+		from drivie_food a, drivie_theater b, drivie_food_in_theater c
+		where a.no=c.food_no and b.no=c.theater_no and b.theatername like '%'||#{searchWord}||'%'
+	</select>
+	<select id="getFoodNoList" resultType="int">
+		select food_no
+		from drivie_food_in_theater
+		where theater_no=#{setTheaterNo}
+	</select>
+</mapper>

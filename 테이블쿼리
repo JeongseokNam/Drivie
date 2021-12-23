@@ -1,0 +1,100 @@
+create table drivie_member(
+no number primary key,
+id varchar2(15) not null,
+pw varchar2(20) not null,
+name varchar2(15) not null,
+email varchar2(30),
+address varchar2(50),
+detailAddress varchar2(50),
+extraAddress varchar2(50),
+tel varchar2(13),
+grade number default 0
+);
+--회원테이블--
+create sequence member_no_seq;
+--회원번호시퀀스--
+insert into drivie_member values(member_no_seq.nextval,'wlqlel01','njs7894','남정석','wlqlel00@naver.com',null,null,null,'010-6662-1096');
+--테스트
+
+--영화테이블--
+create table drivie_movie(
+no number primary key,
+title varchar2(50) not null,
+director varchar2(20) not null,
+actor varchar2(50) not null,
+photo varchar2(100) not null,
+story varchar2(1000) not null
+);
+
+--영화등록번호시퀀스--
+create sequence movie_no_seq;
+
+
+--상영관테이블--
+create table drivie_theater(
+no number primary key,
+name varchar2(100) not null,
+address varchar2(100) not null,
+detailAddress varchar2(100),
+extraAddress varchar2(100),
+tel varchar2(20) not null
+);
+--상영관등록번호시퀀스--
+create sequence theater_no_seq;
+
+--음식테이블--
+create table drivie_food(
+no number primary key,
+name varchar2(100) not null,
+price number not null,
+photo varchar2(100) not null
+);
+--음식등록번호시퀀스--
+create sequence food_no_seq;
+
+--영화/극장 연결테이블--
+create table drivie_movie_in_theater(
+no number primary key,
+movie_no number,
+theater_no number,
+showtime varchar2(20),
+foreign key(movie_no) references drivie_movie(no) on delete cascade,
+foreign key(theater_no) references drivie_theater(no) on delete cascade);
+--시퀀스--
+create sequence movie_in_theater_no_seq;
+
+--음식/극장 연결테이블--
+create table drivie_food_in_theater(
+no number primary key,
+food_no number,
+theater_no number,
+foreign key(food_no) references drivie_food(no) on delete cascade,
+foreign key(theater_no) references drivie_theater(no) on delete cascade);
+--시퀀스--
+create sequence food_in_theater_no_seq;
+--좌석정보 테이블--
+create table drivie_seat_info(
+theater_no number primary key,
+seat_row number,
+seat_col number,
+foreign key(theater_no) references drivie_theater(no) on delete cascade
+);
+--좌석상태테이블
+create table drivie_seat_flag(
+seat_name varchar2(3) primary key,
+seat_no number,
+seat_flag number,
+foreign key(seat_no) references drivie_movie_in_theater(no) on delete cascade
+);
+--예매테이블
+create table drivie_reservation(
+reserveno number primary key,
+movietitle varchar2(50),
+theatername varchar2(100),
+showtime varchar2(30),
+seatname varchar2(3),
+price varchar2(20),
+memberid varchar2(15)
+);
+
+create sequence reservation_no_seq;

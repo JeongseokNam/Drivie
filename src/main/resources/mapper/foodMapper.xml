@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.mypj.DAO.IF_FoodDAO">
+	<select id="selectFoodList" resultType="com.mypj.VO.FoodVO">
+		select * from drivie_food
+	</select>
+	<insert id="insertFood">
+		insert into drivie_food
+		values(food_no_seq.nextval,#{foodname},#{price},#{photo})
+	</insert>
+	<select id="selectFood" resultType="com.mypj.VO.FoodVO">
+		select * from drivie_food where no=#{no}
+	</select>
+	<update id="updateFood">
+		update drivie_food
+		set name=#{foodname},price=#{price},photo=#{photo}
+		where no=#{no}
+	</update>
+	<delete id="deleteFood">
+		delete drivie_food
+		where no=#{no}
+	</delete>
+	<select id="searchFood" resultType="com.mypj.VO.FoodVO">
+		select * from drivie_food
+		where foodname like '%'||#{searchWord}||'%'
+	</select>
+</mapper>

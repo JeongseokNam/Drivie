@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.mypj.DAO.IF_MemberDAO">
+	<select id="idChk" resultType="String">
+		select id from drivie_member where id=#{id}
+	</select>
+	
+	<insert id="insertMember">
+		insert into drivie_member 
+		values(member_no_seq.nextval,#{id},#{pw},#{name},#{email},#{address},#{detailAddress},#{extraAddress},#{tel},default)
+	</insert>
+	
+	<select id="selectMemberInfo" resultType="com.mypj.VO.MemberVO">
+		select * from drivie_member where id=#{id}
+	</select>
+	
+	<update id="updateMemberInfo">
+		update drivie_member 
+		set pw=#{pw},name=#{name},email=#{email},address=#{address},detailAddress=#{detailAddress},extraAddress=#{extraAddress},tel=#{tel},grade=#{grade}
+		where id=#{id}
+	</update>
+	<select id="selectMemberList" resultType="com.mypj.VO.MemberVO">
+		select * from drivie_member
+	</select>
+	<delete id="deleteMember">
+		delete drivie_member where id=#{id}
+	</delete>
+</mapper>
+

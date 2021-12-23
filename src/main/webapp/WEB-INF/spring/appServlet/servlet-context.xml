@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 첨부파일 관련 -->
+	<beans:bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+	</beans:bean>
+	<!--  첨부파일이 서버에 올라오면 임시 저장소에 저장됩니다.. 이를 내가 원하는 곳으로 다시 이동해야 한다.
+	       내가 원하는 곳에 대한 정보를 설정.. 여기서  이동하는 곳이 아니리 이동할 곳의 정보설정(위치정보)입니다.. 구분하세요. -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="E:/Source/STS_src/Drivie/src/main/webapp/resources/tmp"></beans:constructor-arg>
+	</beans:bean>
+	
+	
+	<!-- Handler Interceptor -->
+	<beans:bean id="LoginInterceptor" class="com.mypj.Interceptor.LoginInterceptor"/>
+	<beans:bean id="AdminInterceptor" class="com.mypj.Interceptor.AdminInterceptor"/>
+	<!-- 인터셉터에 적용할 컨트롤러 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**" />
+			<exclude-mapping path="/home" />
+			<exclude-mapping path="/sign**" />
+			<exclude-mapping path="/logout" />
+			<exclude-mapping path="/resources/**" />
+			<exclude-mapping path="/idChk" />
+			<exclude-mapping path="/memberChk" />
+			<exclude-mapping path="/admin**" />
+			<beans:ref bean="LoginInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/admin**"/>
+			<beans:ref bean="AdminInterceptor"/>
+		</interceptor>
+	</interceptors>
+	<context:component-scan base-package="com.mypj.drivie" />
+	<!-- 유틸클래스 스캔 -->
+	<context:component-scan base-package="com.mypj.util" />
+</beans:beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mypj.DAO.IF_TheaterDAO">
+	<insert id="insertTheater">
+		insert into drivie_theater
+		values(theater_no_seq.nextval,#{theatername},#{address},#{detailAddress},#{extraAddress},#{tel})
+	</insert>
+	<select id="getTheaterList" resultType="com.mypj.VO.TheaterVO">
+		select * from drivie_theater
+	</select>
+	<select id="selectTheater" resultType="com.mypj.VO.TheaterVO">
+		select * from drivie_theater where no=#{no}
+	</select>
+	<update id="updateTheater">
+		update drivie_theater set
+		name=#{theatername},address=#{address},detailAddress=#{detailAddress},extraAddress=#{extraAddress},tel=#{tel}
+		where no=#{no}
+	</update>
+	<delete id="deleteTheater">
+		delete drivie_theater where no=#{no}
+	</delete>
+	<select id="searchTheater" resultType="com.mypj.VO.TheaterVO">
+		select * from drivie_theater where theatername like '%'||#{searchWord}||'%'
+	</select>
+</mapper>
